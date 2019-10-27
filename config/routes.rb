@@ -7,7 +7,10 @@ Rails.application.routes.draw do
   resources :locations
   resources :membership_types
   resources :users, only: [:index]
-  resources :carriers
+  resources :carriers do
+    resource :loans, only: [:new, :create], module: :carriers
+  end
+
   resources :photos, only: :destroy
   get 'home/index'
 

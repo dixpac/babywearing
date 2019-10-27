@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_24_165716) do
+ActiveRecord::Schema.define(version: 2019_10_27_141315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,11 +85,14 @@ ActiveRecord::Schema.define(version: 2019_10_24_165716) do
   end
 
   create_table "loans", force: :cascade do |t|
-    t.integer "cart_id"
     t.integer "carrier_id"
     t.date "due_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "lender_id"
+    t.bigint "borrower_id"
+    t.index ["borrower_id"], name: "index_loans_on_borrower_id"
+    t.index ["lender_id"], name: "index_loans_on_lender_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -158,4 +161,6 @@ ActiveRecord::Schema.define(version: 2019_10_24_165716) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "carriers", "locations", column: "current_location_id"
   add_foreign_key "carriers", "locations", column: "home_location_id"
+  add_foreign_key "loans", "users", column: "borrower_id"
+  add_foreign_key "loans", "users", column: "lender_id"
 end
