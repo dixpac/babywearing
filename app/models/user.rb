@@ -10,7 +10,6 @@ class User < ApplicationRecord
             :state, :postal_code, :phone_number, presence: true
 
   has_many :signed_agreements
-  has_many :carts
 
   after_create :send_welcome_email
   after_create :assign_member_role
