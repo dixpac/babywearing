@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
+require "modal_responder"
+
 class ApplicationController < ActionController::Base
   include Authentication
   include Pundit
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  # See `lib/modal_responder.rb` for deatils.
+  def respond_modal_with(*args, &blk)
+    options = args.extract_options!
+    options[:responder] = ModalResponder
+
+    respond_with *args, options, &blk
+  end
 
   private
     def user_not_authorized(exception)

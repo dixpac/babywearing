@@ -1,26 +1,16 @@
 class Carriers::LoansController < ApplicationController
   before_action :set_carrier
 
+  respond_to :html, :json
+
   def new
     @loan = @carrier.loans.new
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
+    respond_modal_with @loan
   end
 
   def create
-    @loan = @carrier.loans.new(loan_params)
-    @loan.lender_id = current_user.id
-
-    respond_to do |format|
-      if @loan.save
-        format.html { redirect_to @carrier, notice: 'Checkout performed successfully.' }
-      else
-        format.html { render :new }
-      end
-    end
+    @loan = @carrier.loans.create(loan_params)
+    respond_modal_with @loan, location: carrier_path(@carrier)
   end
 
   private
